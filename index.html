@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¿Queres ser mi novia?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: "Arial", sans-serif;
+            background: url("https://images.unsplash.com/photo-1710162734220-d543f0dff259?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+        }
+
+        .container,
+        .yes-message,
+        .no-message {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin: 0 auto; /* Centra el contenedor */
+        }
+
+        h1 {
+            font-size: 2em; /* Tamaño de fuente ajustado */
+            margin-bottom: 20px;
+            overflow: hidden; /* Evita el desbordamiento */
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin: 5px 0;
+        }
+
+        .btn-yes {
+            background-color: #FFB6C1; /* Rosa claro */
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background-color: #FF69B4; /* Rosa intenso */
+            transform: scale(1.1);
+        }
+
+        .btn-no {
+            background-color: #00b7ff; /* Amarillo dorado */
+            color: white;
+        }
+
+        .btn-no:hover {
+            background-color: #0192cc; /* Amarillo más oscuro */
+        }
+
+
+        .yes-message {
+            display: none;
+        }
+
+        .no-message {
+            display: none;
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        #btn-arrepentimiento {
+            margin-top: 20px;
+            font-size: 1.2em;
+            padding: 10px 15px;
+            background-color: #ffc107;
+            color: black;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            border-right: .15em solid black;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3s steps(30, end), blink-caret .5s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+            from,
+            to {
+                border-color: transparent;
+            }
+
+            50% {
+                border-color: black;
+            }
+        }
+
+        /* Media Queries para responsividad */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em; /* Tamaño de fuente reducido en pantallas pequeñas */
+            }
+
+            button {
+                font-size: 1.2em; /* Tamaño de botón reducido en pantallas pequeñas */
+                padding: 8px 16px; /* Ajustar el padding */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="question-container">
+        <h1>¿Queres ser mi novia? :)</h1>
+        <div class="buttons">
+            <button class="btn-yes" onclick="showYesMessage()">Sí</button>
+            <button class="btn-no" id="btn-no" onclick="showNoMessage()">No</button>
+        </div>
+    </div>
+
+    <div class="yes-message" id="yes-message-container">
+        <h1>¡Te amo gordu!</h1>
+        <p>Me haces la persona más feliz del mundo.</p>
+        <button id="btn-arrepentimiento" onclick="goBack()">
+            😅 Ups, me arrepentí
+        </button>
+        <canvas id="confetti" class="confetti"></canvas>
+    </div>
+
+    <div class="no-message" id="no-message-container">
+        <h1>¡Oh no! 😢</h1>
+        <button onclick="goBackToQuestion()">Volver a preguntar</button>
+    </div>
+
+    <script>
+        function showYesMessage() {
+            document.getElementById("question-container").style.display = "none";
+            document.getElementById("yes-message-container").style.display = "block";
+            confettiArray = [];
+            startConfetti();
+        }
+
+        function showNoMessage() {
+            document.getElementById("question-container").style.display = "none";
+            document.getElementById("no-message-container").style.display = "block";
+        }
+
+        function goBack() {
+            document.getElementById("question-container").style.display = "block";
+            document.getElementById("yes-message-container").style.display = "none";
+        }
+
+        function goBackToQuestion() {
+            document.getElementById("question-container").style.display = "block";
+            document.getElementById("no-message-container").style.display = "none";
+        }
+
+        const confettiCanvas = document.getElementById("confetti");
+        const confettiContext = confettiCanvas.getContext("2d");
+        let confettiArray = [];
+        let confettiActive = true;
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        function resizeCanvas() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+
+        function startConfetti() {
+            for (let i = 0; i < 300; i++) {
+                confettiArray.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    r: Math.random() * 10 + 5,
+                    d: Math.random() * 10 + 5,
+                    color: getRandomColor(),
+                    tilt: Math.random() * 10,
+                    tiltAngle: 0,
+                    speed: Math.random() * 4 ,
+                });
+            }
+            requestAnimationFrame(drawConfetti);
+            setTimeout(stopConfetti, 2000);
+        }
+
+        function stopConfetti() {
+            confettiActive = false;
+            confettiCanvas.style.transition = "opacity 2s ease-out";
+            confettiCanvas.style.opacity = 0;
+        }
+
+        function drawConfetti() {
+            if (!confettiActive) return;
+
+            confettiContext.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiArray.forEach((confetti) => {
+                confetti.tiltAngle += 0.1;
+                confetti.x += Math.sin(confetti.tiltAngle) * 2;
+                confetti.y += confetti.speed;
+                confetti.tilt = Math.sin(confetti.tiltAngle) * 10;
+
+                drawHeart(confetti.x, confetti.y, confetti.r, confetti.color);
+
+                if (confetti.y > confettiCanvas.height) {
+                    confetti.y = 0 - confetti.r;
+                    confetti.x = Math.random() * confettiCanvas.width;
+                }
+            });
+            requestAnimationFrame(drawConfetti);
+        }
+
+        function drawHeart(x, y, size, color) {
+            confettiContext.fillStyle = color;
+            confettiContext.beginPath();
+            confettiContext.moveTo(x, y);
+            confettiContext.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+            confettiContext.bezierCurveTo(x - size, y + size, x, y + size / 2, x, y + size);
+            confettiContext.bezierCurveTo(x, y + size / 2, x + size, y + size, x + size, y);
+            confettiContext.bezierCurveTo(x + size, y - size, x, y - size / 2, x, y);
+            confettiContext.fill();
+        }
+
+        function getRandomColor() {
+            const colors = [
+                "#FF69B4", // Rosa fuerte
+                "#FFD700", // Dorado
+                "#87CEEB", // Azul
+                "#BA55D3", // Violeta
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
+</body>
+
+</html>
